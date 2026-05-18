@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Convite de Casamento – Wigner & Ghiovanna</title>
+  <meta name="description" content="Convite de casamento com contagem regressiva, endereços e confirmação de presença (RSVP)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f7f4;
+      --card: #ffffff;
+      --ink: #2b2b2b;
+      --muted: #6b7280;
+      --accent: #9b6b6b;
+      --accent-2: #c59a9a;
+      --ring: rgba(155,107,107,.25);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      line-height: 1.6;
+    }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
+    header.hero {
+      position: relative; padding: 72px 0 48px; text-align: center;
+      background: linear-gradient(180deg, #fffaf7, rgba(255,250,247,0));
+    }
+    .names { font-family: "Playfair Display", serif; font-weight: 700; font-size: clamp(36px, 6vw, 68px); margin: 0 0 8px; }
+    .subtitle { color: var(--muted); font-size: 18px; margin-bottom: 28px; }
+    .date-tag {
+      display: inline-block; padding: 10px 16px; border-radius: 999px; background: var(--card);
+      border: 1px solid #eee; box-shadow: 0 6px 18px rgba(0,0,0,.04);
+    }
+    .section { padding: 36px 0; }
+    .card {
+      background: var(--card); border: 1px solid #eee; border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,.05); padding: 22px;
+    }
+    h2 { font-family: "Playfair Display", serif; font-weight: 600; font-size: clamp(24px, 3.2vw, 34px); margin: 0 0 12px; }
+    p { margin: 0 0 12px; }
+    .grid { display: grid; gap: 18px; }
+    @media (min-width: 860px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+    .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+    .time-box { background: var(--card); border: 1px solid #eee; border-radius: 16px; padding: 16px; text-align: center; }
+    .time-number { font-size: clamp(22px, 4.5vw, 36px); font-weight: 700; }
+    .time-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+
+    .btn {
+      appearance: none; border: 1px solid var(--accent-2); background: var(--accent);
+      color: #fff; padding: 12px 16px; border-radius: 12px; cursor: pointer; font-weight: 600;
+      transition: transform .04s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: 0 10px 24px var(--ring);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn.secondary { background: #fff; color: var(--accent); }
+
+    .info { display: grid; gap: 8px; color: var(--muted); }
+    .info strong { color: var(--ink); }
+
+    form { display: grid; gap: 12px; }
+    label { font-weight: 600; font-size: 14px; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid #e6e6e6; font: inherit; background: #fff;
+      outline: none; transition: border .2s ease, box-shadow .2s ease;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-2); box-shadow: 0 0 0 4px var(--ring); }
+    .hint { color: var(--muted); font-size: 13px; }
+    .success, .error {
+      padding: 12px 14px; border-radius: 12px; display: none;
+    }
+    .success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    .error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+    footer { text-align: center; padding: 32px 0 56px; color: var(--muted); }
+    .heart { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="date-tag">Estamos muito felizes em convidar você para o nosso grande dia</p>
+      <h1 class="names">Wigner &amp; Ghiovanna</h1>
+      <p class="subtitle">Sábado, 11 de dezembro de 2027</p>
+
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div class="time-box"><span class="time-number" id="days">--</span><span class="time-label">dias</span></div>
+        <div class="time-box"><span class="time-number" id="hours">--</span><span class="time-label">horas</span></div>
+        <div class="time-box"><span class="time-number" id="minutes">--</span><span class="time-label">min</span></div>
+        <div class="time-box"><span class="time-number" id="seconds">--</span><span class="time-label">seg</span></div>
+      </div>
+      <p class="hint">Faltam alguns instantes para celebrarmos juntos!</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- SOBRE O EVENTO -->
+    <section class="section grid grid-2">
+      <div class="card">
+        <h2>Cerimônia</h2>
+        <div class="info">
+          <p><strong>Igreja:</strong> Paróquia São Miguel</p>
+          <p><strong>Endereço:</strong> R. Padre Boleslau Bayer, 1045 – São Miguel</p>
+          <p><strong>Horário:</strong> 16h00</p>
+        </div>
+        <figure style="margin:16px 0; text-align:center;">
+          <img src="https://sdmntpreastus2.oaiusercontent.com/files/00000000-3c98-61f6-a871-5673e590a275/raw"
+               style="width:100%; max-width:480px; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,.15);" />
+          <figcaption style="margin-top:8px; font-size:14px; color:#6b7280;">
+            Igreja onde será realizada a cerimônia 💒
+          </figcaption>
+        </figure>
+        <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=R.+Padre+Boleslau+Bayer,+1045" target="_blank">Abrir no Google Maps</a>
+      </div>
+
+      <div class="card">
+        <h2>Recepção / Festa</h2>
+        <div class="info">
+          <p><strong>Espaço:</strong> Elegância Espaço de Eventos</p>
+          <p><strong>Endereço:</strong> RUA. Aleixo Czelusniak, sn – Campo Redondo, Araucária – PR</p>
+          <p><strong>Horário:</strong> após a cerimônia</p>
+        </div>
+        <figure style="margin:16px 0; text-align:center;">
+          <img src="https://lh3.googleusercontent.com/p/AF1QipMlqws9lbkfiPNhxjE5ignH1_1Ox8r1GzNSr7NG=w408-h408-k-no"
+               style="width:100%; max-width:480px; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,.15);" />
+          <figcaption style="margin-top:8px; font-size:14px; color:#6b7280;">
+            Espaço onde será realizada a recepção 💖
+          </figcaption>
+        </figure>
+        <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=RUA.+Aleixo+Czelusniak,+sn+-+Campo+Redondo" target="_blank">Abrir no Google Maps</a>
+      </div>
+    </section>
+
+    <!-- CONFIRMAÇÃO DE PRESENÇA -->
+    <section class="section">
+      <div class="card">
+        <h2>Confirme sua presença (RSVP)</h2>
+        <p class="hint">Preencha até <strong>01 de março de 2026</strong> para nos ajudar na organização.</p>
+
+        <!-- FormSubmit -->
+        <form action="https://formsubmit.co/wignerghiovanna@gmail.com" method="POST">
+          <div>
+            <label for="name">Nome completo *</label>
+            <input id="name" name="Nome" type="text" placeholder="Seu nome" required />
+          </div>
+
+          <div>
+            <label for="email">E-mail *</label>
+            <input id="email" name="Email" type="email" placeholder="voce@email.com" required />
+          </div>
+
+          <div>
+            <label for="presence">Você irá?</label>
+            <select id="presence" name="Presença" required>
+              <option value="">Selecione…</option>
+              <option value="Sim">Sim, estarei lá!</option>
+              <option value="Não">Infelizmente não poderei ir</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="guests">Terá acompanhante?</label>
+            <select id="guests" name="Acompanhante" required>
+              <option value="">Selecione…</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="guestName">Nome do acompanhante</label>
+            <input id="guestName" name="Nome do acompanhante" type="text" placeholder="Nome do acompanhante" />
+          </div>
+
+          <div>
+            <label for="shoeSize">Número de calçado (Mulheres)</label>
+            <input id="shoeSize" name="Número de calçado" type="number" min="20" max="50" placeholder="Ex: 38" />
+          </div>
+
+          <div>
+            <label for="message">Deixe um recadinho (opcional)</label>
+            <textarea id="message" name="Mensagem" rows="4" placeholder="Estamos ansiosos para celebrar com vocês!"></textarea>
+          </div>
+
+          <div>
+            <button type="submit" class="btn">Confirmar presença</button>
+          </div>
+
+          <!-- Configurações extras do FormSubmit -->
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="obrigado.html">
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <h2>Informações úteis</h2>
+        <ul>
+          <li>Não pode utilizar roupas de nenhum tom de Azul.</li>
+          <li>Chegue com 45 minutos de antecedência na igreja.</li>
+          <li>Estacionamento conveniado disponível na recepção.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Feito com <span class="heart">❤</span> por Wigner &amp; Ghiovanna 
+  </footer>
+
+  <script>
+    const weddingDate = new Date(2027, 11, 11, 16, 0, 0);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = weddingDate - now;
+      const el = {
+        days: document.getElementById('days'),
+        hours: document.getElementById('hours'),
+        minutes: document.getElementById('minutes'),
+        seconds: document.getElementById('seconds')
+      };
+
+      if (diff <= 0) {
+        el.days.textContent = '0';
+        el.hours.textContent = '0';
+        el.minutes.textContent = '0';
+        el.seconds.textContent = '0';
+        return;
+      }
+
+      const seconds = Math.floor(diff / 1000);
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+
+      el.days.textContent = String(days);
+      el.hours.textContent = String(hours).padStart(2, '0');
+      el.minutes.textContent = String(minutes).padStart(2, '0');
+      el.seconds.textContent = String(secs).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>

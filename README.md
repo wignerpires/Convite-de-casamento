@@ -17,7 +17,7 @@ informações cruciais sobre o evento e interagir diretamente com a página.
 
 ______________________________________________________________________________________________________________________________________________________________________________________________
 
-#🛠️ Tecnologias Utilizadas
+🛠️ Tecnologias Utilizadas
 
 O projeto foi construído utilizando as seguintes tecnologias de front-end:
 
